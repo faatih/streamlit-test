@@ -98,9 +98,12 @@ def main():
 
     # Handle sending
     if send_clicked:
-        if user_input.strip():
+        if isinstance(user_input, str) and user_input.strip():
             now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            response = chatbot.get_response(user_input)
+            try:
+                response = chatbot.get_response(user_input)
+            except Exception as e:
+                response = f"[Error] {e}"
             st.session_state.chat_history.append({"user": user_input, "bot": response, "timestamp": now})
             st.session_state.input = ""  # Clear input
             st.experimental_rerun()
