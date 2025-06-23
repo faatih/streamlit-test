@@ -92,7 +92,7 @@ def main():
     # Input area
     col1, col2 = st.columns([5, 1])
     with col1:
-        user_input = st.text_input("Type your message", value=st.session_state.get("input", ""), key="input", label_visibility="collapsed")
+        user_input = st.text_input("Type your message", value=st.session_state.get("user_input", ""), key="user_input", label_visibility="collapsed")
     with col2:
         send_clicked = st.button("Send", use_container_width=True)
 
@@ -105,7 +105,7 @@ def main():
             except Exception as e:
                 response = f"[Error] {e}"
             st.session_state.chat_history.append({"user": user_input, "bot": response, "timestamp": now})
-            st.session_state.input = ""  # Clear input
+            st.session_state["user_input"] = ""  # Clear input safely
             st.experimental_rerun()
         else:
             st.warning("Please enter a message.")
@@ -114,7 +114,7 @@ def main():
     with st.sidebar:
         if st.button("🗑️ Clear Chat"):
             st.session_state.chat_history = []
-            st.session_state.input = ""
+            st.session_state["user_input"] = ""
             st.experimental_rerun()
         if st.session_state.chat_history:
             if st.download_button(
